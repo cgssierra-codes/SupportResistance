@@ -42,10 +42,15 @@ def is_far_from_level(value, levels, df):
 
 def SR_method_1(df):
     levels = []
+
+    print(df)
     for i in range(2, df.shape[0] - 2):
         if is_support(df, i):
             low = df['Low'][i]
             if is_far_from_level(low, levels, df):
+                # t = (df["Date"][i])
+                # print(mpl_dates.num2date(t))
+                # print(t)
                 levels.append((i, low))
         elif is_resistance(df, i):
             high = df['High'][i]
@@ -62,6 +67,8 @@ def plot_all(levels, df):
   date_format = mpl_dates.DateFormatter('%d %b %Y')
   ax.xaxis.set_major_formatter(date_format)
   for level in levels:
+    # print(df['Date'][level[0]])
+    # df['Date'][level[0]] ## level[0] is the index on where the data is located, save as mpl_date number format it can be converted to date by using mpl_dates.num2date(x,y)
     plt.hlines(level[1], xmin = df['Date'][level[0]], xmax =
       max(df['Date']), colors='blue', linestyle='--')
   fig.show()
@@ -98,7 +105,8 @@ def SR_method_2(df):
     return pivots
 
 
-# plot_all((SR_method_2(df)), df)
+levels = SR_method_1(df)
+plot_all(levels, df)
 
 #method 1: fractal candlestick pattern
 def detect_level_method_1(df):
